@@ -1,0 +1,20 @@
+{
+  "name": "research-workflow-control",
+  "interface": {
+    "displayName": "Research Workflow Control"
+  },
+  "plugins": [
+    {
+      "name": "research-workflow-control",
+      "source": {
+        "source": "local",
+        "path": "./plugins/research-workflow-control"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

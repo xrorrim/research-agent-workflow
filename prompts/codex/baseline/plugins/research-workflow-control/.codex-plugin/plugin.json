@@ -1,0 +1,25 @@
+{
+  "name": "research-workflow-control",
+  "version": "1.0.0",
+  "description": "科研多智能体工作流对照版（原始 prompt 基线）的 Codex 插件",
+  "author": {
+    "name": "科研工作流作者"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "科研工作流·对照版",
+    "shortDescription": "原始 prompt 基线的科研多智能体工作流",
+    "longDescription": "由角色1与作者讨论路线，并用 Codex 子 agent 自动驱动 R2→R3→R5→R4 科研实验循环的对照实验版插件。",
+    "developerName": "科研工作流作者",
+    "category": "Productivity",
+    "capabilities": [
+      "Multi-agent",
+      "Research"
+    ],
+    "defaultPrompt": [
+      "请使用科研工作流·对照版，我来描述课题。",
+      "开始循环。",
+      "继续循环。"
+    ]
+  }
+}

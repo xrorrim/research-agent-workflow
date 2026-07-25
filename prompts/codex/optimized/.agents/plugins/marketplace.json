@@ -1,0 +1,20 @@
+{
+  "name": "research-workflow-local",
+  "interface": {
+    "displayName": "科研工作流本地插件"
+  },
+  "plugins": [
+    {
+      "name": "research-workflow-automation",
+      "source": {
+        "source": "local",
+        "path": "./plugins/research-workflow-automation"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

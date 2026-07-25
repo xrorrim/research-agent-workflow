@@ -1,0 +1,33 @@
+{
+  "name": "research-workflow-automation",
+  "version": "0.1.1",
+  "description": "科研多智能体工作流自动化版的 Codex 原生适配插件",
+  "author": {
+    "name": "Original workflow author"
+  },
+  "license": "UNLICENSED",
+  "keywords": [
+    "research",
+    "multi-agent",
+    "workflow",
+    "automation"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "科研工作流·自动化版",
+    "shortDescription": "在 Codex 中安装并运行科研多智能体循环。",
+    "longDescription": "把科研多智能体工作流安装到当前项目，并由 Codex 主会话自动编排调研、策略、实现、审核与实验记录角色。",
+    "developerName": "Original workflow author",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "把科研多智能体工作流安装到当前项目",
+      "开始科研工作流并讨论我的课题",
+      "继续科研实验循环"
+    ],
+    "brandColor": "#2563EB"
+  }
+}

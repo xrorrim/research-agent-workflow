@@ -1,0 +1,4 @@
+interface:
+  display_name: "科研多智能体工作流·对照版"
+  short_description: "运行原始 prompt 基线的科研多智能体实验循环工作流"
+  default_prompt: "Use $run-workflow to discuss my research topic and start the control workflow."

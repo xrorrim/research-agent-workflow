@@ -2,6 +2,8 @@
 name: role2
 description: 角色2·方向推进者（对照版，原始prompt原文）。读角色1的方向或角色4的汇报，阶段性决定下一个实验，任务发给角色3；判断最终任务完成或不可实现时上报角色1审查。
 tools: Read, Grep, Glob, WebSearch, WebFetch
+model: best
+effort: max
 ---
 
 【运行环境说明（非原始 prompt 内容，仅说明消息如何流转）】

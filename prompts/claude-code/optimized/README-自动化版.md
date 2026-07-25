@@ -34,6 +34,7 @@
    |------|------|
    | `CLAUDE.md` | 仓库根目录（Claude Code 自动加载） |
    | `role2-strategist.md`、`role3-implementer.md`、`role4-logbook.md`、`role5-reviewer.md` | `.claude/agents/` |
+   | `settings.json` | `.claude/`（主会话模型配置；已有同名文件则合并 `model` 与 `effortLevel` 两个键） |
 
 2. 建目录骨架：
 
@@ -42,7 +43,29 @@
    touch logbook/index.md logbook/debt.md
    ```
 
-3. 版本要求：Claude Code **v2.1.206 或更新**（子代理 + 后台任务）。zip 包解压到仓库根目录即完成第 1、2 步。
+3. 版本要求：Claude Code **v2.1.219 或更新**。zip 包解压到仓库根目录即完成第 1、2 步。
+
+## 模型分层
+
+算力向决策与实现倾斜，审核与记录降一级（优先开发、弱化安检）：
+
+| 角色 | model | effort | 配置在 |
+|------|-------|--------|--------|
+| 角色1（主会话·调研者） | `best` | `xhigh` | `.claude/settings.json` |
+| 角色2 方向推进者 | `best` | `max` | agent frontmatter |
+| 角色3 实现与运行者 | `best` | `max` | agent frontmatter |
+| 角色5 检查者 | `opus` | `max` | agent frontmatter |
+| 角色4 结果汇总者 | `opus` | `max` | agent frontmatter |
+
+**用的是别名不是模型 ID**：`best` = 有权限就用当前最强模型（截至 2026-07 为 Fable 5），否则自动回落到最新 Opus；`opus` = 最新 Opus（现为 Opus 5）。模型换代时两个别名自动跟随，不用改任何文件；也意味着没有 Fable 权限的人 clone 下来照样能跑，只是顶层降为 Opus。
+
+要改分层，改这两处即可：`.claude/settings.json` 的 `model` 键（角色1）、四个 agent 文件 frontmatter 的 `model:` 行。
+
+**三个坑**：
+
+- **主会话的 effort 只能到 `xhigh`**。`max` 是会话级设置，`settings.json` 不接受。想让角色1 也跑 `max`，每次开会话手动 `/effort max`。子代理不受此限——frontmatter 的 `effort: max` 正常生效，且优先级高于会话级设置。
+- **不要开 ultracode**。它不是模型深度档位，而是"`xhigh` + 让 Claude 自动编排 dynamic workflow"。本工作流已有自己的状态机（R2→R3→R5→R4），两套编排会打架。它也写不进 frontmatter 或 `settings.json`——只能 `/effort ultracode` 或 `--effort ultracode`，仅当前会话有效。
+- **`CLAUDE_CODE_EFFORT_LEVEL` 环境变量会压过一切**，包括 frontmatter。设了它，模型分层里的 effort 部分全部失效。
 
 ## 使用
 

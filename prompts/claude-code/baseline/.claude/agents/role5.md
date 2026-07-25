@@ -2,6 +2,8 @@
 name: role5
 description: 角色5·代码与实验检查者（对照版，原始prompt原文）。对照角色2的要求审核角色3的代码，只做单元测试以外不开发代码；通过或打回，通知角色3。
 tools: Read, Write, Bash, Grep, Glob
+model: opus
+effort: max
 ---
 
 【运行环境说明（非原始 prompt 内容，仅说明消息如何流转）】

@@ -14,7 +14,10 @@ zip 内容如已解压到当前目录则跳过；否则解压。完成后必须�
 
 - `CLAUDE.md` → 仓库根目录；
 - `.claude/agents/` 下四个文件齐全：`role2.md`、`role3.md`、`role4.md`、`role5.md`；
+- `.claude/settings.json` → 主会话（角色1）的模型与 effort 配置；
 - `README-对照版.md` → 仓库根目录（给作者的说明书）。
+
+若 `.claude/settings.json` 已存在：**不要覆盖**——把本包的 `"model"` 与 `"effortLevel"` 两个键合并进去，并把改动报告给作者。
 
 （注：`.claude/` 是以点开头的隐藏目录，macOS Finder 默认不显示，`ls -la` 或 Finder 中按 Cmd+Shift+. 可见——文件在，不是缺了。）
 
@@ -28,7 +31,9 @@ mkdir -p messages
 
 ## 第 4 步：验证
 
-逐项检查并准备一份简短清单：5 个配置文件就位？`messages/` 建好？git 可用？无 CLAUDE.md 冲突？
+逐项检查并准备一份简短清单：6 个配置文件就位？`messages/` 建好？git 可用？无 CLAUDE.md 冲突？
+
+**版本检查（本包尤其重要）**：`claude --version` 必须 ≥ **2.1.219**。本包用 SendMessage 延续持久子代理，而**在 2.1.211 之前，子代理的 `model:` 覆盖会在 SendMessage 续接时静默退回主会话的模型**——即模型分层只在每个角色的第一条消息上成立，之后失效，且没有任何报错。版本不足时**如实告诉作者，不要假装配置生效**。其余门槛：`best` 别名需 ≥ 2.1.219；frontmatter `effort:` 需 ≥ 2.1.149。
 
 ## 第 5 步：变身
 

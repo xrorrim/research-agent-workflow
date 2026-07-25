@@ -78,6 +78,26 @@ The baseline's role definitions are the **original prompt reproduced verbatim**,
 
 ---
 
+## Model tiering (Claude Code packages only)
+
+Compute is weighted toward deciding and building; review and record-keeping run one tier down — "ship first, lighten the safety check":
+
+| Role | model | effort | Configured in |
+|------|-------|--------|---------------|
+| Role 1 Researcher (main session) | `best` | `xhigh` | `.claude/settings.json` |
+| Role 2 Strategist | `best` | `max` | agent frontmatter |
+| Role 3 Implementer | `best` | `max` | agent frontmatter |
+| Role 5 Reviewer | `opus` | `max` | agent frontmatter |
+| Role 4 Logbook | `opus` | `max` | agent frontmatter |
+
+These are **aliases, not pinned model IDs**: `best` resolves to the strongest model your org can access (Fable 5 as of 2026-07), falling back to the latest Opus otherwise; `opus` is the latest Opus. They follow model releases automatically — and anyone without Fable access can still run the workflow, just with Opus at the top tier.
+
+Both packages use the **identical** model configuration, so it is not a variable under test in the A/B comparison.
+
+**Three gotchas**: the main session's effort caps at `xhigh` (`max` is session-scoped and rejected by config files — run `/effort max` per session if you want it); `CLAUDE_CODE_EFFORT_LEVEL` overrides frontmatter, disabling the effort tiering entirely; and **don't enable ultracode** — it isn't a depth setting but "`xhigh` + have Claude auto-orchestrate dynamic workflows", which competes with this workflow's own state machine for control of the main session.
+
+Requires Claude Code **≥ 2.1.219**. The baseline package is especially sensitive: it continues persistent subagents via SendMessage, and before 2.1.211 a subagent's `model:` override silently reverted to the parent session's model on follow-up.
+
 ## Installation
 
 > ⚠️ **Do not install both versions in the same repo** — their config files overwrite each other. Use two separate repos, or two worktrees/branches of one.
@@ -95,13 +115,13 @@ Drop the zip in your project repo root and tell Claude Code:
 <details>
 <summary>Manual install (equivalent, 3 steps)</summary>
 
-1. `CLAUDE.md` → repo root; the four `role*.md` → `.claude/agents/`
+1. `CLAUDE.md` → repo root; the four `role*.md` and `settings.json` → `.claude/`
 2. Create the skeleton:
    ```bash
    mkdir -p .claude/agents docs/route_archive logbook/messages experiments results tests
    touch logbook/index.md logbook/debt.md
    ```
-3. Requires Claude Code **v2.1.206+** (subagents + background tasks)
+3. Requires Claude Code **v2.1.219+**
 
 </details>
 

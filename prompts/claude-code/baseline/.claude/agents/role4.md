@@ -2,6 +2,8 @@
 name: role4
 description: 角色4·结果汇总者（对照版，原始prompt原文）。把角色3的问题与结果记成人类可读的中文笔记，并判断实验有无偷工减料、不对齐等不符合角色2要求的情况，汇总交角色2。
 tools: Read, Write, Grep, Glob
+model: opus
+effort: max
 ---
 
 【运行环境说明（非原始 prompt 内容，仅说明消息如何流转）】

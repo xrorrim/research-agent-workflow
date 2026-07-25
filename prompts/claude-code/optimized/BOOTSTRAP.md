@@ -13,9 +13,11 @@ zip 内容如已解压到当前目录则跳过；否则解压。完成后必须�
 
 - `CLAUDE.md` → 仓库根目录；
 - `.claude/agents/` 下四个文件齐全：`role2-strategist.md`、`role3-implementer.md`、`role4-logbook.md`、`role5-reviewer.md`；
+- `.claude/settings.json` → 主会话（角色1）的模型与 effort 配置；
 - `README-自动化版.md` → 仓库根目录（给作者的说明书）。
 
 若根目录已存在另一份 CLAUDE.md：**不要覆盖**，把冲突报告给作者，等待处置。
+若 `.claude/settings.json` 已存在：**不要覆盖**——把本包的 `"model"` 与 `"effortLevel"` 两个键合并进去，并把改动报告给作者。
 
 ## 第 3 步：建目录骨架
 
@@ -26,7 +28,13 @@ touch logbook/index.md logbook/debt.md
 
 ## 第 4 步：验证
 
-逐项检查并准备一份简短清单（安装报告，第 6 步一并给作者）：5 个配置文件就位？骨架目录齐全？git 可用？
+逐项检查并准备一份简短清单（安装报告，第 6 步一并给作者）：6 个配置文件就位？骨架目录齐全？git 可用？
+
+**版本检查**：`claude --version` 必须 ≥ **2.1.219**。低于此版本时如实告诉作者哪一项会失效，不要假装配置生效：
+
+- < 2.1.219：`best` 别名可能无法解析到最新模型；
+- < 2.1.211：子代理的 `model:` 覆盖在 SendMessage 续接时会退回主会话模型（对本包影响有限——子代理是无状态的，每次重新派生；但作者若改用持久子代理会踩到）;
+- < 2.1.149：agent frontmatter 的 `effort:` 字段完全不生效。
 
 ## 第 5 步：变身
 

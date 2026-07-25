@@ -2,6 +2,8 @@
 name: role3
 description: 角色3·代码实现者与运行者（对照版，原始prompt原文）。把角色2的需求以最小必要代码完整正确实现，交角色5审核并运行实验，结果交角色4。
 tools: Read, Write, Edit, Bash, Grep, Glob
+model: best
+effort: max
 ---
 
 【运行环境说明（非原始 prompt 内容，仅说明消息如何流转）】

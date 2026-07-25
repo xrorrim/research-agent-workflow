@@ -75,6 +75,26 @@
 
 ---
 
+## 模型分层（仅 Claude Code 两版）
+
+算力向决策与实现倾斜，审核与记录降一级——"优先开发、弱化安检"：
+
+| 角色 | model | effort | 配置在 |
+|------|-------|--------|--------|
+| 角色1 调研者（主会话） | `best` | `xhigh` | `.claude/settings.json` |
+| 角色2 方向推进者 | `best` | `max` | agent frontmatter |
+| 角色3 实现与运行者 | `best` | `max` | agent frontmatter |
+| 角色5 检查者 | `opus` | `max` | agent frontmatter |
+| 角色4 结果汇总者 | `opus` | `max` | agent frontmatter |
+
+用的是**别名不是模型 ID**：`best` = 有权限就用当前最强模型（截至 2026-07 为 Fable 5），否则自动回落到最新 Opus；`opus` = 最新 Opus。模型换代时自动跟随，不用改任何文件——没有 Fable 权限的人 clone 下来照样能跑，只是顶层降为 Opus。
+
+两版的模型配置**完全一致**，因此它不是 A/B 对照实验的被测变量。
+
+**三个坑**：主会话 effort 只能到 `xhigh`（`max` 是会话级设置，配置文件不接受；要 `max` 得每次 `/effort max`）；`CLAUDE_CODE_EFFORT_LEVEL` 环境变量会压过 frontmatter，设了它 effort 分层全部失效；**不要开 ultracode**——它不是深度档位而是"`xhigh` + 自动编排 dynamic workflow"，会与本工作流自己的状态机争夺编排权。
+
+需要 Claude Code **≥ 2.1.219**。对照版尤其敏感：它用 SendMessage 延续持久子代理，而 2.1.211 之前子代理的 `model:` 覆盖会在续接时静默退回主会话模型。
+
 ## 安装
 
 > ⚠️ **不要把两个版本装进同一个仓库**——配置文件会互相覆盖。用两个独立仓库，或同一仓库的两个 worktree/分支。
@@ -92,13 +112,13 @@
 <details>
 <summary>手动安装（等价三步）</summary>
 
-1. `CLAUDE.md` → 仓库根目录；四个 `role*.md` → `.claude/agents/`
+1. `CLAUDE.md` → 仓库根目录；四个 `role*.md` 和 `settings.json` → `.claude/`
 2. 建骨架：
    ```bash
    mkdir -p .claude/agents docs/route_archive logbook/messages experiments results tests
    touch logbook/index.md logbook/debt.md
    ```
-3. 要求 Claude Code **v2.1.206+**（子代理 + 后台任务）
+3. 要求 Claude Code **v2.1.219+**
 
 </details>
 
